@@ -73,14 +73,14 @@ EventHub is a full-stack web application that allows users to create, manage, an
 4. **Environment Configuration**
     # Create .env files in both backend and frontend directories
     # Example .env for backend:
-    DB_USER=postgres
-    DB_HOST=localhost
-    DB_NAME=event_manager
-    DB_PASSWORD=your_password
-    DB_PORT=5432
-    JWT_SECRET=your_super_secret_jwt_key
-    EMAIL_USER=your_email@gmail.com
-    EMAIL_PASS=your_app_password
+    - DB_USER=postgres
+    - DB_HOST=localhost
+    - DB_NAME=event_manager
+    - DB_PASSWORD=your_password
+    - DB_PORT=5432
+    - JWT_SECRET=your_super_secret_jwt_key
+    - EMAIL_USER=your_email@gmail.com
+    - EMAIL_PASS=your_app_password
 
     # Example .env for frontend:
     REACT_APP_API_URL=http://localhost:5000/api
