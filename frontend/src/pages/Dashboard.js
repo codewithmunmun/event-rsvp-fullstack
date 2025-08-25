@@ -47,12 +47,12 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-100 py-8">
       <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold text-center mb-8 text-purple-600">Dashboard</h1>
+        <h1 className="text-3xl font-bold text-center mb-8 text-teal-600">Dashboard</h1>
         
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow-md p-6 text-center">
-            <h3 className="text-2xl font-bold text-purple-600">{stats.eventsCreated}</h3>
+            <h3 className="text-2xl font-bold text-teal-600">{stats.eventsCreated}</h3>
             <p className="text-gray-600">Events Created</p>
           </div>
           
@@ -62,14 +62,14 @@ const Dashboard = () => {
           </div>
           
           <div className="bg-white rounded-lg shadow-md p-6 text-center">
-            <h3 className="text-2xl font-bold text-blue-600">{stats.totalRSVPs}</h3>
+            <h3 className="text-2xl font-bold text-teal-600">{stats.totalRSVPs}</h3>
             <p className="text-gray-600">Total RSVPs</p>
           </div>
         </div>
 
         {/* Recent Events */}
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold mb-4 text-purple-600">Your Recent Events</h2>
+          <h2 className="text-2xl font-bold mb-4 text-teal-600">Your Recent Events</h2>
           {recentEvents.length === 0 ? (
             <p className="text-gray-600">You haven't created any events yet.</p>
           ) : (
@@ -88,7 +88,7 @@ const Dashboard = () => {
 
         {/* Quick Actions */}
         <div className="bg-white rounded-lg shadow-md p-6 mt-6">
-          <h2 className="text-2xl font-bold mb-4 text-purple-600">Quick Actions</h2>
+          <h2 className="text-2xl font-bold mb-4 text-teal-600">Quick Actions</h2>
           <div className="flex space-x-4">
             <button className="btn-primary">Create New Event</button>
             <button className="btn-secondary">View All Events</button>

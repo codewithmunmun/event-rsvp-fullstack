@@ -108,7 +108,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
             {loading ? 'Creating Account...' : 'Sign Up'}
           </button>
@@ -117,7 +117,7 @@ const Register = () => {
       
       <div className="text-center">
         <p>
-          Already have an account? <Link to="/login" className="text-blue-600 hover:underline">Log in</Link>
+          Already have an account? <Link to="/login" className="text-teal-600 hover:underline">Log in</Link>
         </p>
       </div>
     </div>

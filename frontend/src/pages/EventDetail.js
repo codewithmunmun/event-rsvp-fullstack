@@ -248,7 +248,7 @@ const EventDetail = () => {
               <div className="flex space-x-4">
                 <button
                   onClick={() => navigate(`/edit-event/${event.id}`)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                  className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded"
                 >
                   Edit Event
                 </button>

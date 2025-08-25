@@ -31,7 +31,7 @@ const MyEvents = () => {
         <h1 className="text-3xl font-bold">My Events</h1>
         <Link 
           to="/create-event" 
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700"
         >
           Create New Event
         </Link>
@@ -40,7 +40,7 @@ const MyEvents = () => {
       {events.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-gray-500 text-lg mb-4">You haven't created any events yet.</p>
-          <Link to="/create-event" className="text-blue-600 hover:underline">
+          <Link to="/create-event" className="text-teal-600 hover:underline">
             Create your first event!
           </Link>
         </div>
@@ -62,7 +62,7 @@ const MyEvents = () => {
                   </span>
                   <Link 
                     to={`/events/${event.id}`} 
-                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700"
                   >
                     Manage
                   </Link>

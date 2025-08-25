@@ -30,7 +30,7 @@ const Home = () => {
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">Welcome to Event Manager</h1>
         <p className="text-xl text-gray-600 mb-8">Create, manage, and attend events with ease</p>
-        <Link to="/events" className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+        <Link to="/events" className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700">
           Browse All Events
         </Link>
       </div>
@@ -55,7 +55,7 @@ const Home = () => {
                     <span className="text-sm text-gray-500">{event.rsvp_count} attendees</span>
                     <Link 
                       to={`/events/${event.id}`} 
-                      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                      className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700"
                     >
                       View Details
                     </Link>
