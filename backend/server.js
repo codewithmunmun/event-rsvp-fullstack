@@ -2,6 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const db = require('./config/database');
+const qrRoutes = require('./routes/qrcode');
+const uploadRoutes = require('./routes/upload');
+const exportRoutes = require('./routes/export');
+const adminRoutes = require('./routes/admin');
 console.log('Database config loaded');
 
 // Route imports
@@ -49,6 +53,10 @@ app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/rsvps', rsvpRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/qrcode', qrRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/export', exportRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Error handling middleware
 app.use((error, req, res, next) => {
