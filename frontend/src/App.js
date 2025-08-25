@@ -11,6 +11,8 @@ import EventDetail from './pages/EventDetail';
 import CreateEvent from './pages/CreateEvent';
 import MyEvents from './pages/MyEvents';
 import MyRSVPs from './pages/MyRSVPs';
+import Profile from './pages/Profile';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           <Navbar />
           <div className="container mx-auto px-4">
             <Routes>
+              <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+              <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />

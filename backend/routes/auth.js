@@ -98,4 +98,38 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
+// Get user profile
+router.get('/profile', auth, async (req, res) => {
+  try {
+    const user = await db.query(
+      'SELECT id, name, email, role, profile_picture, bio, phone, address FROM users WHERE id = $1',
+      [req.userId]
+    );
+    res.json(user.rows[0]);
+  } catch (error) {
+    console.error('Failed to fetch profile', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Update user profile
+router.put('/profile', auth, async (req, res) => {
+  try {
+    const { name, email, bio, phone, address, profile_picture } = req.body;
+    
+    const updatedUser = await db.query(
+      `UPDATE users 
+       SET name = $1, email = $2, bio = $3, phone = $4, address = $5, profile_picture = $6 
+       WHERE id = $7 
+       RETURNING id, name, email, role, profile_picture, bio, phone, address`,
+      [name, email, bio, phone, address, profile_picture, req.userId]
+    );
+    
+    res.json(updatedUser.rows[0]);
+  } catch (error) {
+    console.error('Failed to update profile', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = router;
