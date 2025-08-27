@@ -60,6 +60,7 @@ EventHub is a full-stack web application that allows users to create, manage, an
     npm install
 
 2. **Setup the Frontend**
+    ```bash
     cd ../frontend
     npm install
 
