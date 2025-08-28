@@ -61,11 +61,11 @@ EventHub is a full-stack web application that allows users to create, manage, an
 
 ### 10. My RSVPs Page  
 *(Shows events user has RSVP'd to with status)*  
-![My RSVPs](./screenshots/My%20RSVPs.png) 
+![My RSVPs](./screenshots/MyRSVPs.png) 
 
 ### 11. Dashboard Page  
 *(Shows stats like total events created, total RSVPs, upcoming events)*
-![Dashboard](./screenshots/Dashboard.png)
+![Dashboard](./screenshots/Dashboard%20Page.png)
 
 ### 12. Profile Page
 *(With profile photo upload feature)*  
