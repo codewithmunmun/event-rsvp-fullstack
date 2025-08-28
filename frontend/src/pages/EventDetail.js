@@ -14,6 +14,7 @@ const EventDetail = () => {
   const [loading, setLoading] = useState(true);
   const [rsvpLoading, setRsvpLoading] = useState(false);
   const [guestsCount, setGuestsCount] = useState(1);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -69,6 +70,7 @@ const EventDetail = () => {
       }
     } catch (error) {
       console.error('Failed to RSVP', error);
+      alert('Failed to RSVP: ' + (error.response?.data?.message || 'Please try again'));
     } finally {
       setRsvpLoading(false);
     }
@@ -83,199 +85,273 @@ const EventDetail = () => {
       });
       
       setUserRsvp(response.data);
+      
+      // Update RSVP count if changing from/to confirmed
+      if (userRsvp.status === 'confirmed' && status !== 'confirmed') {
+        setEvent(prev => ({ ...prev, rsvp_count: prev.rsvp_count - 1 }));
+      } else if (userRsvp.status !== 'confirmed' && status === 'confirmed') {
+        setEvent(prev => ({ ...prev, rsvp_count: prev.rsvp_count + 1 }));
+      }
     } catch (error) {
       console.error('Failed to update RSVP', error);
+      alert('Failed to update RSVP: ' + (error.response?.data?.message || 'Please try again'));
     } finally {
       setRsvpLoading(false);
     }
   };
 
+  const handleDeleteEvent = async () => {
+    if (!window.confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      setDeleteLoading(true);
+      await axios.delete(`/api/events/${id}`);
+      navigate('/my-events');
+    } catch (error) {
+      console.error('Failed to delete event', error);
+      alert('Failed to delete event: ' + (error.response?.data?.message || 'Please try again'));
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
   if (loading) {
-    return <div className="text-center py-8">Loading event details...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center py-8 text-xl">Loading event details...</div>
+      </div>
+    );
   }
 
   if (!event) {
-    return <div className="text-center py-8">Event not found.</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center py-8 text-xl text-red-600">Event not found.</div>
+      </div>
+    );
   }
 
   const confirmedAttendees = rsvps.filter(rsvp => rsvp.status === 'confirmed');
   const isHost = currentUser && currentUser.id === event.host_id;
   const isFull = confirmedAttendees.length >= event.capacity;
+  const availableSpots = event.capacity - confirmedAttendees.length;
 
   return (
-    <div className="py-8">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
-        {event.image_url && (
-          <img src={event.image_url} alt={event.title} className="w-full h-64 object-cover" />
-        )}
-        <div className="p-6">
-          <h1 className="text-3xl font-bold mb-2">{event.title}</h1>
-          <p className="text-gray-600 mb-4">
-            Hosted by <span className="font-semibold">{event.host_name}</span>
-          </p>
+    <div className="min-h-screen bg-gray-100 py-8">
+      <div className="container mx-auto px-4">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+          {event.image_url && (
+            <img 
+              src={event.image_url} 
+              alt={event.title} 
+              className="w-full h-64 object-cover"
+              onError={(e) => {
+                e.target.style.display = 'none';
+              }}
+            />
+          )}
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <h2 className="text-xl font-semibold mb-2">Date & Time</h2>
-              <p>{new Date(event.date).toLocaleDateString()} at {new Date(event.date).toLocaleTimeString()}</p>
+          <div className="p-6">
+            <h1 className="text-3xl font-bold mb-2 text-gray-800">{event.title}</h1>
+            <p className="text-gray-600 mb-4">
+              Hosted by <span className="font-semibold text-teal-600">{event.host_name}</span>
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <h2 className="text-xl font-semibold mb-2 text-gray-700">Date & Time</h2>
+                <p className="text-gray-800">
+                  {new Date(event.date).toLocaleDateString()} at {new Date(event.date).toLocaleTimeString()}
+                </p>
+              </div>
+              
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <h2 className="text-xl font-semibold mb-2 text-gray-700">Location</h2>
+                <p className="text-gray-800">{event.location}</p>
+              </div>
+              
+              {event.category && (
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h2 className="text-xl font-semibold mb-2 text-gray-700">Category</h2>
+                  <span className="inline-block bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-semibold">
+                    {event.category}
+                  </span>
+                </div>
+              )}
+              
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <h2 className="text-xl font-semibold mb-2 text-gray-700">Capacity</h2>
+                <p className="text-gray-800">
+                  <span className="font-bold text-green-600">{confirmedAttendees.length}</span> attending of{' '}
+                  <span className="font-bold">{event.capacity}</span> spots
+                  {isFull && (
+                    <span className="ml-2 text-red-600 text-sm font-semibold">(FULL)</span>
+                  )}
+                </p>
+                {!isFull && (
+                  <p className="text-sm text-gray-600 mt-1">
+                    {availableSpots} spots available
+                  </p>
+                )}
+              </div>
             </div>
             
-            <div>
-              <h2 className="text-xl font-semibold mb-2">Location</h2>
-              <p>{event.location}</p>
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold mb-2 text-gray-700">Description</h2>
+              <p className="text-gray-700 leading-relaxed">{event.description}</p>
             </div>
             
-            {event.category && (
-              <div>
-                <h2 className="text-xl font-semibold mb-2">Category</h2>
-                <p>{event.category}</p>
+            {!isHost && (
+              <div className="border-t pt-6">
+                <h2 className="text-xl font-semibold mb-4 text-gray-700">RSVP to this event</h2>
+                
+                {userRsvp ? (
+                  <div>
+                    <p className="mb-4">
+                      Your current status:{' '}
+                      <span className={`ml-2 px-3 py-1 rounded-full text-sm font-semibold ${
+                        userRsvp.status === 'confirmed' ? 'bg-green-100 text-green-800' :
+                        userRsvp.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                        {userRsvp.status.toUpperCase()}
+                      </span>
+                    </p>
+                    
+                    <div className="mb-4">
+                      <label className="block text-gray-700 mb-2 font-semibold">
+                        Number of guests (including yourself)
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        max={Math.min(event.capacity, availableSpots + (userRsvp.status === 'confirmed' ? userRsvp.guests_count : 0))}
+                        value={guestsCount}
+                        onChange={(e) => setGuestsCount(Math.max(1, parseInt(e.target.value) || 1))}
+                        className="border rounded px-3 py-2 w-24 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      />
+                    </div>
+                    
+                    <div className="flex space-x-4">
+                      <button
+                        onClick={() => handleUpdateRSVP('confirmed')}
+                        disabled={rsvpLoading || (isFull && userRsvp.status !== 'confirmed')}
+                        className={`px-6 py-2 rounded font-semibold transition-colors ${
+                          isFull && userRsvp.status !== 'confirmed' 
+                            ? 'bg-gray-400 cursor-not-allowed text-gray-600' 
+                            : 'bg-green-600 hover:bg-green-700 text-white'
+                        }`}
+                      >
+                        {rsvpLoading ? 'Updating...' : 'Confirm Attendance'}
+                      </button>
+                      
+                      <button
+                        onClick={() => handleUpdateRSVP('declined')}
+                        disabled={rsvpLoading}
+                        className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-semibold transition-colors"
+                      >
+                        {rsvpLoading ? 'Updating...' : 'Decline'}
+                      </button>
+                    </div>
+                    
+                    {isFull && userRsvp.status !== 'confirmed' && (
+                      <p className="text-red-600 mt-2 font-semibold">This event is at full capacity.</p>
+                    )}
+                  </div>
+                ) : (
+                  <div>
+                    <div className="mb-4">
+                      <label className="block text-gray-700 mb-2 font-semibold">
+                        Number of guests (including yourself)
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        max={availableSpots}
+                        value={guestsCount}
+                        onChange={(e) => setGuestsCount(Math.max(1, parseInt(e.target.value) || 1))}
+                        className="border rounded px-3 py-2 w-24 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      />
+                    </div>
+                    
+                    <div className="flex space-x-4">
+                      <button
+                        onClick={() => handleRSVP('confirmed')}
+                        disabled={rsvpLoading || isFull}
+                        className={`px-6 py-2 rounded font-semibold transition-colors ${
+                          isFull 
+                            ? 'bg-gray-400 cursor-not-allowed text-gray-600' 
+                            : 'bg-green-600 hover:bg-green-700 text-white'
+                        }`}
+                      >
+                        {rsvpLoading ? 'Processing...' : 'RSVP Now'}
+                      </button>
+                      
+                      <button
+                        onClick={() => handleRSVP('declined')}
+                        disabled={rsvpLoading}
+                        className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-semibold transition-colors"
+                      >
+                        {rsvpLoading ? 'Processing...' : 'Decline'}
+                      </button>
+                    </div>
+                    
+                    {isFull && (
+                      <p className="text-red-600 mt-2 font-semibold">This event is at full capacity.</p>
+                    )}
+                  </div>
+                )}
               </div>
             )}
             
-            <div>
-              <h2 className="text-xl font-semibold mb-2">Capacity</h2>
-              <p>{confirmedAttendees.length} attending of {event.capacity} spots</p>
-            </div>
-          </div>
-          
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold mb-2">Description</h2>
-            <p className="text-gray-700">{event.description}</p>
-          </div>
-          
-          {!isHost && (
-            <div className="border-t pt-6">
-              <h2 className="text-xl font-semibold mb-4">RSVP to this event</h2>
-              
-              {userRsvp ? (
-                <div>
-                  <p className="mb-4">
-                    Your current status: 
-                    <span className={`ml-2 px-3 py-1 rounded-full text-sm font-semibold ${
-                      userRsvp.status === 'confirmed' ? 'bg-green-100 text-green-800' :
-                      userRsvp.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                      'bg-red-100 text-red-800'
-                    }`}>
-                      {userRsvp.status}
-                    </span>
-                  </p>
-                  
-                  <div className="mb-4">
-                    <label className="block text-gray-700 mb-2">Number of guests (including yourself)</label>
-                    <input
-                      type="number"
-                      min="1"
-                      max={event.capacity - confirmedAttendees.length + (userRsvp.status === 'confirmed' ? userRsvp.guests_count : 0)}
-                      value={guestsCount}
-                      onChange={(e) => setGuestsCount(parseInt(e.target.value))}
-                      className="border rounded px-3 py-2 w-24"
-                    />
-                  </div>
-                  
-                  <div className="flex space-x-4">
-                    <button
-                      onClick={() => handleUpdateRSVP('confirmed')}
-                      disabled={rsvpLoading || (isFull && userRsvp.status !== 'confirmed')}
-                      className={`px-4 py-2 rounded ${
-                        isFull && userRsvp.status !== 'confirmed' 
-                          ? 'bg-gray-400 cursor-not-allowed' 
-                          : 'bg-green-600 hover:bg-green-700 text-white'
-                      }`}
-                    >
-                      {rsvpLoading ? 'Updating...' : 'Confirm Attendance'}
-                    </button>
-                    
-                    <button
-                      onClick={() => handleUpdateRSVP('declined')}
-                      disabled={rsvpLoading}
-                      className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
-                    >
-                      {rsvpLoading ? 'Updating...' : 'Decline'}
-                    </button>
-                  </div>
-                  
-                  {isFull && userRsvp.status !== 'confirmed' && (
-                    <p className="text-red-600 mt-2">This event is at full capacity.</p>
-                  )}
+            {isHost && (
+              <div className="border-t pt-6">
+                <h2 className="text-xl font-semibold mb-4 text-gray-700">Host Controls</h2>
+                <div className="flex space-x-4">
+                  <button
+                    onClick={() => navigate(`/edit-event/${event.id}`)}
+                    className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2 rounded font-semibold transition-colors"
+                  >
+                    Edit Event
+                  </button>
+                  <button 
+                    onClick={handleDeleteEvent}
+                    disabled={deleteLoading}
+                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-semibold transition-colors disabled:opacity-50"
+                  >
+                    {deleteLoading ? 'Deleting...' : 'Delete Event'}
+                  </button>
                 </div>
-              ) : (
-                <div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 mb-2">Number of guests (including yourself)</label>
-                    <input
-                      type="number"
-                      min="1"
-                      max={event.capacity - confirmedAttendees.length}
-                      value={guestsCount}
-                      onChange={(e) => setGuestsCount(parseInt(e.target.value))}
-                      className="border rounded px-3 py-2 w-24"
-                    />
-                  </div>
-                  
-                  <div className="flex space-x-4">
-                    <button
-                      onClick={() => handleRSVP('confirmed')}
-                      disabled={rsvpLoading || isFull}
-                      className={`px-4 py-2 rounded ${
-                        isFull 
-                          ? 'bg-gray-400 cursor-not-allowed' 
-                          : 'bg-green-600 hover:bg-green-700 text-white'
-                      }`}
-                    >
-                      {rsvpLoading ? 'Processing...' : 'RSVP Now'}
-                    </button>
-                    
-                    <button
-                      onClick={() => handleRSVP('declined')}
-                      disabled={rsvpLoading}
-                      className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
-                    >
-                      {rsvpLoading ? 'Processing...' : 'Decline'}
-                    </button>
-                  </div>
-                  
-                  {isFull && (
-                    <p className="text-red-600 mt-2">This event is at full capacity.</p>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-          
-          {isHost && (
-            <div className="border-t pt-6">
-              <h2 className="text-xl font-semibold mb-4">Host Controls</h2>
-              <div className="flex space-x-4">
-                <button
-                  onClick={() => navigate(`/edit-event/${event.id}`)}
-                  className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded"
-                >
-                  Edit Event
-                </button>
-                <button className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded">
-                  Send Updates
-                </button>
               </div>
+            )}
+          </div>
+        </div>
+        
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h2 className="text-2xl font-bold mb-4 text-gray-800">Attendees ({confirmedAttendees.length})</h2>
+          
+          {confirmedAttendees.length === 0 ? (
+            <p className="text-gray-500 text-center py-8">No attendees yet. Be the first to RSVP!</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {confirmedAttendees.map(rsvp => (
+                <div key={rsvp.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                  <p className="font-semibold text-gray-800">{rsvp.user_name}</p>
+                  <p className="text-sm text-gray-600">
+                    {rsvp.guests_count} guest{rsvp.guests_count !== 1 ? 's' : ''}
+                  </p>
+                  {rsvp.checked_in && (
+                    <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mt-2">
+                      Checked In
+                    </span>
+                  )}
+                </div>
+              ))}
             </div>
           )}
         </div>
-      </div>
-      
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold mb-4">Attendees ({confirmedAttendees.length})</h2>
-        
-        {confirmedAttendees.length === 0 ? (
-          <p className="text-gray-500">No attendees yet.</p>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {confirmedAttendees.map(rsvp => (
-              <div key={rsvp.id} className="border rounded-lg p-4">
-                <p className="font-semibold">{rsvp.user_name}</p>
-                <p className="text-sm text-gray-600">{rsvp.guests_count} guests</p>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );

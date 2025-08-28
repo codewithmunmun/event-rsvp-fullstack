@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -14,7 +15,6 @@ const eventRoutes = require('./routes/events');
 const rsvpRoutes = require('./routes/rsvps');
 const notificationRoutes = require('./routes/notifications');
 
-dotenv.config();
 
 const app = express();
 

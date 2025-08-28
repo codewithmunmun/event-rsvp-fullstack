@@ -58,11 +58,13 @@ EventHub is a full-stack web application that allows users to create, manage, an
    ```bash
     cd backend
     npm install
+    ```
 
 2. **Setup the Frontend**
     ```bash
     cd ../frontend
     npm install
+    ```
 
 3. **Database Setup**
     # Create database
@@ -88,14 +90,18 @@ EventHub is a full-stack web application that allows users to create, manage, an
 
 5. **Run the Application**
     # Start backend server
+    ```bash
     cd ../backend
     npm run dev
-    Server runs on http://localhost:5000
+    ```
+    - Server runs on http://localhost:5000
 
     # Start frontend Development server
+    ```bash
     cd ../frontend
     npm start
-    Applications runs on http://localhost:3000
+    ```
+    - Applications runs on http://localhost:3000
 
 ## 📂 Project Structure
 ```

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>.env File Fix Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .error-card {
+            grid-column: 1 / -1;
+            background-color: #ffebee;
+            border-left: 5px solid #c62828;
+        }
+        
+        .success-card {
+            grid-column: 1 / -1;
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        h3 {
+            color: #3498db;
+            margin: 20px 0 10px;
+        }
+        
+        .step {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #eaeaea;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .env-example {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-family: monospace;
+            white-space: pre;
+        }
+        
+        .warning {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #777;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        .note {
+            background-color: #e8f4f8;
+            border-left: 5px solid #17a2b8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .incorrect {
+            background-color: #ffebee;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 5px solid #c62828;
+        }
+        
+        .correct {
+            background-color: #d4edda;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 5px solid #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>.env File Fix</h1>
+        <p>Resolving the "Missing credentials for 'PLAIN'" error</p>
+    </div>
+    
+    <div class="error-card card">
+        <h2>Issue Found</h2>
+        <p>Your <code>EMAIL_PASS</code> value contains spaces but is not wrapped in quotes.</p>
+        
+        <div class="code-block">
+# Your current .env file (problematic)
+EMAIL_PASS=pusi pfcm xvwv ewfe  # ← Spaces without quotes cause issues
+        </div>
+        
+        <p>Environment variables with spaces need to be wrapped in quotes to be parsed correctly.</p>
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <h2>How to Fix It</h2>
+            
+            <div class="step">
+                <h3><span class="step-number">1</span>Edit Your .env File</h3>
+                <p>Open your .env file and wrap the EMAIL_PASS value in quotes:</p>
+                
+                <div class="comparison">
+                    <div class="incorrect">
+                        <h4>❌ Incorrect</h4>
+                        <div class="code-block">
+EMAIL_PASS=pusi pfcm xvwv ewfe
+                        </div>
+                    </div>
+                    
+                    <div class="correct">
+                        <h4>✅ Correct</h4>
+                        <div class="code-block">
+EMAIL_PASS="pusi pfcm xvwv ewfe"
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <h3><span class="step-number">2</span>Your Complete .env File</h3>
+                <p>After fixing, your .env file should look like this:</p>
+                
+                <div class="env-example">
+DB_USER=postgres
+DB_HOST=localhost
+DB_NAME=event_manager
+DB_PASSWORD=postgres098
+DB_PORT=5432
+JWT_SECRET=mySecretKey!098
+EMAIL_USER=munmunkum8210@gmail.com
+EMAIL_PASS="pusi pfcm xvwv ewfe"
+QR_SECRET=munmunqr987
+UPLOAD_PATH=./uploads
+                </div>
+            </div>
+            
+            <div class="step">
+                <h3><span class="step-number">3</span>Save and Restart</h3>
+                <p>Save the .env file and restart your server:</p>
+                
+                <div class="code-block">
+# Stop your current server (Ctrl+C)
+# Then restart it:
+npm run dev
+                </div>
+                
+                <p class="success">✅ The environment variables are only loaded when the server starts, so restarting is essential!</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Why This Happened</h2>
+            
+            <div class="note">
+                <h3>Environment Variable Parsing</h3>
+                <p>Environment files parse values differently based on formatting:</p>
+                <ul>
+                    <li><code>KEY=value</code> - Basic key-value pair</li>
+                    <li><code>KEY="value with spaces"</code> - Values with spaces need quotes</li>
+                    <li><code>KEY='value with spaces'</code> - Single quotes also work</li>
+                </ul>
+            </div>
+            
+            <div class="warning">
+                <h3>What Was Happening</h3>
+                <p>Without quotes, your app password <code>pusi pfcm xvwv ewfe</code> was being interpreted as:</p>
+                <div class="code-block">
+EMAIL_PASS=pusi  # Only the first word was being used
+# The rest (pfcm xvwv ewfe) was being ignored or causing errors
+                </div>
+            </div>
+            
+            <div class="success">
+                <h3>What Will Happen Now</h3>
+                <p>With quotes, your entire app password will be read correctly:</p>
+                <div class="code-block">
+EMAIL_PASS="pusi pfcm xvwv ewfe"  # The entire string is now the value
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="success-card card">
+        <h2>Testing the Fix</h2>
+        
+        <div class="step">
+            <h3>Create a Test Script</h3>
+            <p>To verify everything is working, create a test file:</p>
+            
+            <div class="code-block">
+// test-env.js
+require('dotenv').config();
+
+console.log('Checking environment variables...');
+console.log('EMAIL_USER:', process.env.EMAIL_USER);
+
+// Check if password is set (without revealing it)
+if (process.env.EMAIL_PASS) {
+  console.log('EMAIL_PASS: *** set ***');
+  console.log('Length:', process.env.EMAIL_PASS.length);
+} else {
+  console.log('EMAIL_PASS: NOT SET');
+  process.exit(1);
+}
+
+// If the length is 16, it's correct (without spaces)
+// If the length is 19, it's correct (with spaces)
+console.log('Expected length: 19 (16 characters + 3 spaces)');
+            </div>
+            
+            <p>Run the test with:</p>
+            <div class="code-block">
+node test-env.js
+            </div>
+            
+            <p class="success">✅ If the length shows 19, your app password is being read correctly!</p>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>Need more help? Check the <a href="https://www.npmjs.com/package/dotenv" target="_blank">dotenv documentation</a></p>
+        <p>© 2025 - Event Manager Application</p>
+    </div>
+</body>
+</html>
