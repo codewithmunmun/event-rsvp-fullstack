@@ -23,6 +23,60 @@ EventHub is a full-stack web application that allows users to create, manage, an
 - **RESTful API** - Clean API design with proper error handling
 - **Database Relations** - Proper PostgreSQL relations with foreign keys
 
+--
+## 📸 Screenshots  
+
+### 1. Landing Page  
+![Landing Page](./screenshots/Landing%20Page.png)
+
+### 2. Sign Up Page  
+![Sign Up](./screenshots/Sign%20Up%20Page.png)
+
+### 3. Login Page  
+![Login](./screenshots/Login%20Page.png)
+
+### 4. Forgot Password  
+*(Reset password link sent to email if registered)*  
+![Forgot Password](./screenshots/Forgot%20Password.png)
+
+### 5. Page After Login  
+*(Shows upcoming events and user dashboard)* 
+![After Login](./screenshots/Page%20After%20login.png)
+
+### 6. Events Page  
+*(Events can be searched by chosen categories)*  
+![Categories](./screenshots/Events%20Page%20(including%20categories).png)
+
+### 7. Create Event Page 
+*(With calendar, clock time, and banner image upload/URL option)*  
+![Create Event](./screenshots/Create%20New%20Event%20Page%20(empty).png)
+
+### 8. Create Event Page (Filled)  
+*(With all fields filled with chosen image)*
+![Create Event Filled](./screenshots/Create%20New%20Event%20Page.png)
+
+### 9. Event Created Page
+*(Edit / Delete Event options available for event creator)*
+![Edit Event](./screenshots/Event%20Created.png)
+
+### 10. My RSVPs Page  
+*(Shows events user has RSVP'd to with status)*  
+![My RSVPs](./screenshots/My%20RSVPs.png) 
+
+### 11. Dashboard Page  
+*(Shows stats like total events created, total RSVPs, upcoming events)*
+![Dashboard](./screenshots/Dashboard.png)
+
+### 12. Profile Page
+*(With profile photo upload feature)*  
+![Profile](./screenshots/Profile%20Page.png)
+
+### 13. Profile Update  
+*(Shows Profile updated successfully!)*  
+![Profile Update](./screenshots/Profile%20Update.png)
+
+---
+
 ## 🛠️ Tech Stack
 
 ### Frontend
