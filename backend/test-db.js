@@ -1,4 +1,5 @@
 const { Pool } = require('pg');
+const pool = require('./db');
 
 const pool = new Pool({
   connectionString: 'postgresql://postgres:postgres098@localhost:5432/event_manager'

@@ -1,6 +1,6 @@
 const { Pool } = require('pg');
 
-// Use connection string
+// Use connection string (update if needed)
 const connectionString = 'postgresql://postgres:postgres098@localhost:5432/event_manager';
 
 const pool = new Pool({
@@ -16,7 +16,7 @@ pool.query('SELECT NOW()')
     console.error('❌ Database connection error:', err);
   });
 
-// Connection event handlers for future connections
+// Connection event handlers for monitoring
 pool.on('connect', () => {
   console.log('✅ New database connection established');
 });

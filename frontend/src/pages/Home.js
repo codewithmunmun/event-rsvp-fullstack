@@ -29,7 +29,7 @@ const Home = () => {
     <div className="py-8">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">Welcome to Event Manager</h1>
-        <p className="text-xl text-gray-600 mb-8">Create, manage, and attend events with ease</p>
+        <p className="text-xl mb-8">Create, manage, and attend events with ease</p>
         <Link to="/events" className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700">
           Browse All Events
         </Link>
@@ -70,15 +70,15 @@ const Home = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
         <div>
           <h3 className="text-xl font-bold mb-4">Create Events</h3>
-          <p className="text-gray-600">Easily create and customize your own events with our intuitive event creation tools.</p>
+          <p>Easily create and customize your own events with our intuitive event creation tools.</p>
         </div>
         <div>
           <h3 className="text-xl font-bold mb-4">Manage RSVPs</h3>
-          <p className="text-gray-600">Keep track of attendees, send updates, and manage your event capacity.</p>
+          <p>Keep track of attendees, send updates, and manage your event capacity.</p>
         </div>
         <div>
           <h3 className="text-xl font-bold mb-4">Discover Events</h3>
-          <p className="text-gray-600">Find and join events that interest you from a wide variety of categories.</p>
+          <p>Find and join events that interest you from a wide variety of categories.</p>
         </div>
       </div>
     </div>

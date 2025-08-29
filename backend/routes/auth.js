@@ -5,6 +5,8 @@ const db = require('../config/database');
 const nodemailer = require('nodemailer');
 const router = express.Router();
 
+require('dotenv').config({ path: '../.env' });
+
 console.log('🔍 MAIN APP - Checking environment variables:');
 console.log('EMAIL_USER:', process.env.EMAIL_USER);
 console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? `Set (length: ${process.env.EMAIL_PASS.length})` : 'UNDEFINED');

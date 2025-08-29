@@ -84,4 +84,7 @@ router.get('/users/activity', auth, requireAdmin, async (req, res) => {
   }
 });
 
+router.get('/dashboard', auth, (req, res) => {
+  res.json({ message: `Welcome, user ${req.userId}` });
+});
 module.exports = router;

@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const db = require('../config/database');
 
 const auth = async (req, res, next) => {
   try {
@@ -8,12 +7,13 @@ const auth = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({ message: 'No token, authorization denied' });
     }
-    
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.userId = decoded.userId;
+    
     next();
   } catch (error) {
-    console.error(error);
+    console.error('JWT verification failed:', error.message);
     res.status(401).json({ message: 'Token is not valid' });
   }
 };
