@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const CreateEvent = () => {
+const EditEvent = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   
   const [formData, setFormData] = useState({
@@ -21,6 +22,39 @@ const CreateEvent = () => {
   const [imagePreview, setImagePreview] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [currentImage, setCurrentImage] = useState('');
+
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const response = await axios.get(`/api/events/${id}`);
+        const event = response.data;
+        
+        const eventDate = new Date(event.date);
+        const dateStr = eventDate.toISOString().split('T')[0];
+        const timeStr = eventDate.toTimeString().split(' ')[0].substring(0, 5);
+        
+        setFormData({
+          title: event.title,
+          description: event.description,
+          date: dateStr,
+          time: timeStr,
+          location: event.location,
+          category: event.category || '',
+          capacity: event.capacity,
+          is_public: event.is_public,
+          image_url: event.image_url || ''
+        });
+        
+        setCurrentImage(event.image_url || '');
+      } catch (error) {
+        console.error('Failed to fetch event', error);
+        setError('Failed to load event');
+      }
+    };
+
+    fetchEvent();
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -35,9 +69,15 @@ const CreateEvent = () => {
     if (file) {
       setImageFile(file);
       setImagePreview(URL.createObjectURL(file));
-      // Clear the URL field when uploading a file
       setFormData(prev => ({ ...prev, image_url: '' }));
     }
+  };
+
+  const removeImage = () => {
+    setCurrentImage('');
+    setImagePreview('');
+    setImageFile(null);
+    setFormData(prev => ({ ...prev, image_url: '' }));
   };
 
   const handleSubmit = async (e) => {
@@ -49,7 +89,7 @@ const CreateEvent = () => {
       
       let imageUrl = formData.image_url;
       
-      // Upload image if file is selected
+      // Upload new image if file is selected
       if (imageFile) {
         const uploadFormData = new FormData();
         uploadFormData.append('image', imageFile);
@@ -71,18 +111,14 @@ const CreateEvent = () => {
         ...formData,
         date: dateTime.toISOString(),
         capacity: parseInt(formData.capacity),
-        image_url: imageUrl
+        image_url: imageUrl || currentImage
       };
       
-      const response = await axios.post('/api/events', eventData, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      const response = await axios.put(`/api/events/${id}`, eventData);
       navigate(`/events/${response.data.id}`);
     } catch (error) {
-      console.error('Failed to create event', error);
-      setError(error.response?.data?.message || 'Failed to create event');
+      console.error('Failed to update event', error);
+      setError(error.response?.data?.message || 'Failed to update event');
     } finally {
       setLoading(false);
     }
@@ -90,7 +126,7 @@ const CreateEvent = () => {
 
   return (
     <div className="max-w-2xl mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6 text-white">Create New Event</h1>
+      <h1 className="text-3xl font-bold mb-6 text-white">Edit Event</h1>
       
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
@@ -217,10 +253,33 @@ const CreateEvent = () => {
           </div>
         </div>
 
+        {/* Current Image Preview */}
+        {(currentImage || imagePreview) && (
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Current Image
+            </label>
+            <div className="flex items-center space-x-4">
+              <img 
+                src={imagePreview || currentImage} 
+                alt="Current" 
+                className="w-32 h-32 object-cover rounded border"
+              />
+              <button
+                type="button"
+                onClick={removeImage}
+                className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
+              >
+                Remove Image
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Image Upload Section */}
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            Event Image Upload
+            {currentImage ? 'Replace Event Image' : 'Event Image Upload'}
           </label>
           <input
             type="file"
@@ -235,7 +294,7 @@ const CreateEvent = () => {
                 alt="Preview" 
                 className="w-32 h-32 object-cover rounded border"
               />
-              <p className="text-sm text-gray-600 mt-1">Image Preview</p>
+              <p className="text-sm text-gray-600 mt-1">New Image Preview</p>
             </div>
           )}
         </div>
@@ -269,18 +328,24 @@ const CreateEvent = () => {
           </label>
         </div>
         
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between space-x-4">
           <button
             type="submit"
             disabled={loading}
-            className="bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 transition-all"
+            className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
           >
-            {loading ? 'Creating Event...' : 'Create Event'}
+            {loading ? 'Updating Event...' : 'Update Event'}
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Cancel
           </button>
         </div>
       </form>
     </div>
   );
 };
-
-export default CreateEvent;
+export default EditEvent;

@@ -28,26 +28,26 @@ const Home = () => {
   return (
     <div className="py-8">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Event Manager</h1>
-        <p className="text-xl mb-8">Create, manage, and attend events with ease</p>
-        <Link to="/events" className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700">
+        <h1 className="text-4xl font-bold mb-4 text-white">Welcome to EventHub</h1>
+        <p className="text-xl mb-8 text-teal-100">Create, manage, and attend events with ease</p>
+        <Link to="/events" className="bg-gradient-to-r from-teal-500 to-emerald-600 text-white px-6 py-3 rounded-lg hover:from-teal-600 hover:to-emerald-700 transition-all shadow-lg">
           Browse All Events
         </Link>
       </div>
 
       <div className="mb-12">
-        <h2 className="text-2xl font-bold mb-6">Featured Events</h2>
+        <h2 className="text-2xl font-bold mb-6 text-white">Featured Events</h2>
         {events.length === 0 ? (
-          <p className="text-gray-500">No events available at the moment.</p>
+          <p className="text-gray-300">No events available at the moment.</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {events.map(event => (
-              <div key={event.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div key={event.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
                 {event.image_url && (
                   <img src={event.image_url} alt={event.title} className="w-full h-48 object-cover" />
                 )}
                 <div className="p-4">
-                  <h3 className="text-xl font-bold mb-2">{event.title}</h3>
+                  <h3 className="text-xl font-bold mb-2 text-gray-800">{event.title}</h3>
                   <p className="text-gray-600 mb-2">{new Date(event.date).toLocaleDateString()}</p>
                   <p className="text-gray-600 mb-4">{event.location}</p>
                   <p className="text-gray-700 mb-4 truncate">{event.description}</p>
@@ -55,7 +55,7 @@ const Home = () => {
                     <span className="text-sm text-gray-500">{event.rsvp_count} attendees</span>
                     <Link 
                       to={`/events/${event.id}`} 
-                      className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700"
+                      className="bg-gradient-to-r from-teal-500 to-emerald-600 text-white px-4 py-2 rounded hover:from-teal-600 hover:to-emerald-700 transition-all"
                     >
                       View Details
                     </Link>
@@ -68,17 +68,17 @@ const Home = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-        <div>
-          <h3 className="text-xl font-bold mb-4">Create Events</h3>
-          <p>Easily create and customize your own events with our intuitive event creation tools.</p>
+        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+          <h3 className="text-xl font-bold mb-4 text-teal-300">Create Events</h3>
+          <p className="text-teal-100">Easily create and customize your own events with our intuitive event creation tools.</p>
         </div>
-        <div>
-          <h3 className="text-xl font-bold mb-4">Manage RSVPs</h3>
-          <p>Keep track of attendees, send updates, and manage your event capacity.</p>
+        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+          <h3 className="text-xl font-bold mb-4 text-emerald-300">Manage RSVPs</h3>
+          <p className="text-emerald-100">Keep track of attendees, send updates, and manage your event capacity.</p>
         </div>
-        <div>
-          <h3 className="text-xl font-bold mb-4">Discover Events</h3>
-          <p>Find and join events that interest you from a wide variety of categories.</p>
+        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+          <h3 className="text-xl font-bold mb-4 text-cyan-300">Discover Events</h3>
+          <p className="text-cyan-100">Find and join events that interest you from a wide variety of categories.</p>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Modern Teal & Emerald Theme */
+/* Modern Gradient Theme */
 body {
   background: linear-gradient(135deg, #0fa3b1 0%, #2a9d8f 50%, #1a535c 100%);
   min-height: 100vh;
@@ -12,6 +12,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: white;
 }
 
 code {
@@ -19,42 +20,56 @@ code {
     monospace;
 }
 
-/* Custom gradient background */
+/* Enhanced gradient backgrounds */
 .bg-gradient-theme {
   background: linear-gradient(135deg, #0fa3b1 0%, #2a9d8f 50%, #1a535c 100%);
+}
+
+.bg-gradient-nav {
+  background: linear-gradient(90deg, #0fa3b1 0%, #2a9d8f 100%);
 }
 
 /* Glass morphism effect */
 .glass-effect {
   background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
 }
 
 /* Card hover effects */
 .card-hover {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .card-hover:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
 }
 
-/* Primary button - Teal */
+/* Primary button - Teal Gradient */
 .btn-primary {
   background: linear-gradient(135deg, #0fa3b1 0%, #2a9d8f 100%);
   color: white;
   font-weight: 600;
-  padding: 0.5rem 1.5rem;
-  border-radius: 0.5rem;
+  padding: 0.75rem 2rem;
+  border-radius: 0.75rem;
   transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 4px 15px rgba(15, 163, 177, 0.3);
 }
 
 .btn-primary:hover {
   background: linear-gradient(135deg, #0d8c99 0%, #248277 100%);
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 25px rgba(15, 163, 177, 0.4);
 }
 
 /* Secondary button - Dark Teal */
@@ -62,29 +77,34 @@ code {
   background: linear-gradient(135deg, #1a535c 0%, #264653 100%);
   color: white;
   font-weight: 600;
-  padding: 0.5rem 1.5rem;
-  border-radius: 0.5rem;
+  padding: 0.75rem 2rem;
+  border-radius: 0.75rem;
   transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 4px 15px rgba(26, 83, 92, 0.3);
 }
 
 .btn-secondary:hover {
   background: linear-gradient(135deg, #153b43 0%, #1e3a47 100%);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(26, 83, 92, 0.4);
 }
 
 /* Form styles */
 .form-input {
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
   width: 100%;
-  transition: border-color 0.2s ease;
+  transition: all 0.3s ease;
+  font-size: 1rem;
 }
 
 .form-input:focus {
   outline: none;
   border-color: #0fa3b1;
   box-shadow: 0 0 0 3px rgba(15, 163, 177, 0.1);
+  transform: translateY(-1px);
 }
 
 /* Custom scrollbar */
@@ -93,7 +113,7 @@ code {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
 }
 
@@ -104,4 +124,70 @@ code {
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #0d8c99 0%, #248277 100%);
+}
+
+/* Text gradients */
+.text-gradient {
+  background: linear-gradient(135deg, #0fa3b1 0%, #2a9d8f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animation classes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Loading spinner */
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #0fa3b1;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .glass-effect {
+    backdrop-filter: blur(8px);
+  }
+}
+
+/* Selection color */
+::selection {
+  background-color: rgba(15, 163, 177, 0.3);
+  color: white;
+}
+
+/* Focus styles for accessibility */
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid #0fa3b1;
+  outline-offset: 2px;
 }

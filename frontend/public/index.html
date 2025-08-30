@@ -4,17 +4,76 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#0fa3b1" />
     <meta
       name="description"
-      content="Event Management and RSVP Web Application"
+      content="EventHub - Create, manage, and attend events with our modern event management platform. Perfect for conferences, workshops, parties, and more."
     />
+    <meta name="keywords" content="events, event management, RSVP, tickets, conferences, workshops, parties" />
+    <meta name="author" content="Munmun Kumari" />
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="EventHub - Event Management Platform" />
+    <meta property="og:description" content="Create, manage, and attend events with our modern event management platform." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="%PUBLIC_URL%/social-preview.png" />
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="EventHub - Event Management Platform" />
+    <meta name="twitter:description" content="Create, manage, and attend events with our modern event management platform." />
+    <meta name="twitter:image" content="%PUBLIC_URL%/social-preview.png" />
+    
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <title>Event Manager</title>
+    
+    <!-- Preconnect to external domains for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    
+    <title>EventHub - Modern Event Management Platform</title>
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "EventHub",
+      "url": "https://yourdomain.com",
+      "description": "Modern event management and RSVP platform",
+      "applicationCategory": "EventManagement",
+      "operatingSystem": "Web Browser",
+      "permissions": "browser",
+      "author": {
+        "@type": "Person",
+        "name": "Munmun Kumari"
+      }
+    }
+    </script>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <noscript>
+      <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, #0fa3b1 0%, #2a9d8f 100%); color: white;">
+        <h1>EventHub - JavaScript Required</h1>
+        <p>You need to enable JavaScript to run this application. EventHub is a modern web application that requires JavaScript for full functionality.</p>
+      </div>
+    </noscript>
     <div id="root"></div>
+    
+    <!-- Performance monitoring script (optional) -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js').then(function(registration) {
+            console.log('SW registered: ', registration);
+          }).catch(function(registrationError) {
+            console.log('SW registration failed: ', registrationError);
+          });
+        });
+      }
+    </script>
   </body>
 </html>

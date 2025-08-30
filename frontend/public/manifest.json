@@ -1,15 +1,40 @@
 {
-  "short_name": "Event Manager",
-  "name": "Event Management and RSVP System",
+  "short_name": "EventHub",
+  "name": "EventHub - Event Management Platform",
+  "description": "Create, manage, and attend events with our modern event management platform",
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#0fa3b1",
+  "background_color": "#0fa3b1",
+  "orientation": "portrait-primary",
+  "categories": ["events", "productivity", "social"],
+  "lang": "en",
+  "scope": "/",
+  "screenshots": [
+    {
+      "src": "screenshots/home.png",
+      "type": "image/png",
+      "sizes": "1280x720",
+      "form_factor": "wide",
+      "label": "EventHub Home Page"
+    }
+  ]
 }

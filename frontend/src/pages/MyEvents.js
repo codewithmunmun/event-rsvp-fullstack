@@ -22,16 +22,16 @@ const MyEvents = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center py-8">Loading your events...</div>;
+    return <div className="text-center py-8 text-white">Loading your events...</div>;
   }
 
   return (
     <div className="py-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">My Events</h1>
+        <h1 className="text-3xl font-bold text-white">My Events</h1>
         <Link 
           to="/create-event" 
-          className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700"
+          className="bg-gradient-to-r from-teal-500 to-emerald-600 text-white px-4 py-2 rounded hover:from-teal-600 hover:to-emerald-700 transition-all"
         >
           Create New Event
         </Link>
@@ -39,20 +39,20 @@ const MyEvents = () => {
       
       {events.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg mb-4">You haven't created any events yet.</p>
-          <Link to="/create-event" className="text-teal-600 hover:underline">
+          <p className="text-gray-300 text-lg mb-4">You haven't created any events yet.</p>
+          <Link to="/create-event" className="text-teal-400 hover:underline">
             Create your first event!
           </Link>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {events.map(event => (
-            <div key={event.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div key={event.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
               {event.image_url && (
                 <img src={event.image_url} alt={event.title} className="w-full h-48 object-cover" />
               )}
               <div className="p-4">
-                <h3 className="text-xl font-bold mb-2">{event.title}</h3>
+                <h3 className="text-xl font-bold mb-2 text-gray-800">{event.title}</h3>
                 <p className="text-gray-600 mb-2">{new Date(event.date).toLocaleDateString()}</p>
                 <p className="text-gray-600 mb-4">{event.location}</p>
                 <p className="text-gray-700 mb-4 line-clamp-3">{event.description}</p>
@@ -60,12 +60,20 @@ const MyEvents = () => {
                   <span className="text-sm text-gray-500">
                     {event.rsvp_count} attending • {event.capacity} spots
                   </span>
-                  <Link 
-                    to={`/events/${event.id}`} 
-                    className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700"
-                  >
-                    Manage
-                  </Link>
+                  <div className="flex space-x-2">
+                    <Link 
+                      to={`/edit-event/${event.id}`}
+                      className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
+                    >
+                      Edit
+                    </Link>
+                    <Link 
+                      to={`/events/${event.id}`} 
+                      className="bg-gradient-to-r from-teal-500 to-emerald-600 text-white px-3 py-1 rounded text-sm hover:from-teal-600 hover:to-emerald-700"
+                    >
+                      View
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
